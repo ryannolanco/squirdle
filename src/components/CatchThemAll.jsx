@@ -4,12 +4,12 @@ const CatchThemAll = ({ totalPokemonIndex }) => {
 	// const pokemonId = Math.floor(Math.random() * totalPokemonIndex);
 	const abortController = new AbortController();
 	const { signal } = abortController;
-	const [pokemons, setPokemons] = useState([]);
+	const [pokemon, setPokemon] = useState([]);
 	const [isCorrect, setIsCorrect] = useState(false);
 	const [allPokemonIds, setAllPokemonIds] = useState(0);
-	const [imageURL, setImageUrl] = useState('');
+	const [pokemonImageURL, setPokemonImageUrl] = useState('');
 	const [showImg, setShowImg] = useState(false);
-	const [allImgs, setAllImgs] = useState({});
+	
 
 	const getNewPokemon = async () => {
 		const pokemonId = Math.floor(Math.random() * totalPokemonIndex);
@@ -19,11 +19,8 @@ const CatchThemAll = ({ totalPokemonIndex }) => {
 				{ signal: abortController.signal }
 			);
 			const data = await response.json();
-			console.log(data);
-			setAllImgs({
-				...allImgs,
-				[pokemonId]: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
-			});
+			setPokemon(data)
+			setPokemonImageUrl(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`);
 		} catch (error) {
 			console.error(error);
 		}
@@ -32,7 +29,8 @@ const CatchThemAll = ({ totalPokemonIndex }) => {
 	return (
 		<>
 			<div>
-				<h1>hello</h1>
+				<p>{pokemon.name}</p>
+				<img src={pokemonImageURL} />
 				<button onClick={() => getNewPokemon()}>Get Random Pokemon!</button>
 			</div>
 		</>
