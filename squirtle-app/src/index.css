@@ -1,0 +1,10 @@
+.blacked-out {
+  filter: brightness(0);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
