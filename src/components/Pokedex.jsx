@@ -1,39 +1,59 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+//styles
+import './styles/pokedex.css';
+
+
+const navigate = useNavigate();
+
 
 const Pokedex = ({ totalPokemonIndex }) => {
 	const [allPokemon, setAllPokemon] = useState([]);
 
 	useEffect(() => {
-		const loadAllPokemon = async () => {
-			try {
-				for (let i = 1; i <= totalPokemonIndex; i++) {
+		const abortController = new AbortController();
+
+		const fetchPokemon = async () => {
+			let updatedPokemonList = [...allPokemon];
+			for (let i = 1; i <= 151; i++) {
+				try {
 					const response = await fetch(
 						`https://pokeapi.co/api/v2/pokemon/${i}/`,
 						{ signal: abortController.signal }
 					);
 					const data = await response.json();
-          console.log(data)
-					setAllPokemon([...allPokemon, {
+					updatedPokemonList.push({
 						name: data.name,
 						imgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`,
-					}]);
-          console.log(allPokemon)
+					});
+				} catch (error) {
+					if (error.name !== 'AbortError') {
+						console.error(error);
+					}
 				}
-			} catch (error) {
-				console.error(error);
 			}
+			setAllPokemon(updatedPokemonList);
 		};
-		loadAllPokemon();
-	}, []);
+
+		fetchPokemon();
+		console.log(allPokemon);
+		return () => {
+			abortController.abort(); // Cleanup if component unmounts
+		};
+	}, [totalPokemonIndex]);
+
+	const listItems = allPokemon.map((pokemon) => (
+		<div>
+			<li>
+					<img src={pokemon.imgUrl} />
+					<p>{pokemon.name}</p>
+			</li>
+		</div>
+	));
 
 	return (
 		<div className="pokedex">
-			{allPokemon.map((pokemon) => (
-				<div>
-					<p>{pokemon.name}</p>
-					<img src={pokemon.imgUrl}/>
-				</div>
-			))}
+			<ul>{listItems}</ul>
 		</div>
 	);
 };

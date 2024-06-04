@@ -10,12 +10,10 @@ const Homepage = () => {
 	
 
   return (
-		<>
 			<div>
 				<h1>Welcome to the World of Pokemon!</h1>
 				<Navbar />
 			</div>
-		</>
 	);
 }
 

@@ -15,7 +15,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Homepage />} />
 				<Route path="/catchthemall" element={<CatchThemAll totalPokemonIndex={totalPokemonIndex} />} />
-        <Route path="/pokedex" element={<Pokedex />} />
+        <Route path="/pokedex" element={<Pokedex totalPokemonIndex={totalPokemonIndex}/>} />
 			</Routes>
 		</div>
 	);
