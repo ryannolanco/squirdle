@@ -1,10 +1,12 @@
-
-ul {
-list-style-type: none;
+.pokedex-grid-container {
+  display: grid;
+  grid-template-columns: 10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem;
+  grid-gap: 1rem;
+  grid-auto-flow: row;
+  background-color: red;
 }
 
-li {
-  background-color: white;
-  text-align: center;
-}
+
+
+
 

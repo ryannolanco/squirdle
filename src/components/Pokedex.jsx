@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 //styles
 import './styles/pokedex.css';
 
-
-const navigate = useNavigate();
-
-
 const Pokedex = ({ totalPokemonIndex }) => {
 	const [allPokemon, setAllPokemon] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
 	useEffect(() => {
 		const abortController = new AbortController();
@@ -33,27 +32,27 @@ const Pokedex = ({ totalPokemonIndex }) => {
 				}
 			}
 			setAllPokemon(updatedPokemonList);
+			setLoading(!loading)
 		};
 
 		fetchPokemon();
 		console.log(allPokemon);
+
 		return () => {
 			abortController.abort(); // Cleanup if component unmounts
 		};
-	}, [totalPokemonIndex]);
+	}, []);
 
 	const listItems = allPokemon.map((pokemon) => (
-		<div>
-			<li>
-					<img src={pokemon.imgUrl} />
-					<p>{pokemon.name}</p>
-			</li>
+		<div className='item'>
+			<img src={pokemon.imgUrl} />
+			<p>{pokemon.name}</p>
 		</div>
 	));
 
 	return (
-		<div className="pokedex">
-			<ul>{listItems}</ul>
+		<div className="pokedex-grid-container">
+			{loading ? <p>Loading</p>: listItems}
 		</div>
 	);
 };
